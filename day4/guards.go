@@ -3,7 +3,6 @@ package main
 import (
 	"time"
 	"log"
-	"strconv"
 	"regexp"
 	"reflect"
 	"sort"
@@ -23,9 +22,7 @@ func parseInput(strShifts []string) []shift {
 		r := regexp.MustCompile(`\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})]\s+(.*)`)
 		strParsed := r.FindStringSubmatch(strShft)[1:]
 		timestamp, err := time.Parse("2006-01-02 15:04", strParsed[0])
-		if err != nil {
-			log.Fatal(err)
-		}
+		common.Check(err)
 		msgRe := regexp.MustCompile(`Guard #(\d+) begins shift|falls asleep|wakes up`)
 		msg := msgRe.FindStringSubmatch(strParsed[1])
 		if reflect.DeepEqual(msg, []string(nil)) {
@@ -33,10 +30,7 @@ func parseInput(strShifts []string) []shift {
 		}
 		guardId := 0
 		if msg[1] != "" {
-			guardId, err = strconv.Atoi(msg[1]) // msg[0] is all match (if any)
-			if err != nil {
-				log.Fatal(err)
-			}
+			guardId = common.Atoi(msg[1]) // msg[0] is all match (if any)
 		}
 		shifts = append(shifts, shift{guardId: guardId, shiftStart: timestamp, msg: msg[0]})
 	}

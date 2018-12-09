@@ -1,9 +1,7 @@
 package main
 
 import (
-	"log"
 	"regexp"
-	"strconv"
 	"fmt"
 	"aoc2018/lib/common"
 )
@@ -16,25 +14,12 @@ type claim struct {
 	height	int
 }
 
-func parseStringToInt(input []string) []int {
-	var output []int
-	for _, el := range input {
-		val, err := strconv.Atoi(el)
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			output = append(output, val)
-		}
-	}
-	return output
-}
-
 func parseInput(strClaims []string) []claim {
 	var claims []claim
 	for _, strClm := range strClaims {
 		r := regexp.MustCompile(`#(\d+)\s+@\s+(\d+),(\d+):\s+(\d+)x(\d+)`)
 		strParsed := r.FindStringSubmatch(strClm)[1:]
-		strParsedToInt := parseStringToInt(strParsed)
+		strParsedToInt := common.ParseStringListToIntList(strParsed)
 		claims = append(claims, claim{strParsedToInt[0], strParsedToInt[1], strParsedToInt[2], strParsedToInt[3], strParsedToInt[4]})
 	}
 	return claims
