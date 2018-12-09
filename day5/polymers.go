@@ -1,38 +1,10 @@
 package main
 
 import (
-	"os"
-	"log"
-	"bufio"
-	"path/filepath"
 	"fmt"
 	"strings"
+	"aoc2018/lib/common"
 )
-
-func readFile(path string) string {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	var tmp string
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			tmp = scanner.Text()
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return tmp
-}
 
 func reactPolymer(polymer string) string {
 	polymerCheck := polymer
@@ -53,11 +25,7 @@ func reactPolymer(polymer string) string {
 }
 
 func main() {
-	path, err := filepath.Abs("day5/input")
-	if err != nil {
-		log.Fatal(err)
-	}
-	polymer := readFile(path)
+	polymer := common.ReadToStringList("day5/input")[0] // just one element
 	// part one
 	reactedPolymer := reactPolymer(polymer)
 	fmt.Println("Part 1 result:", len(reactedPolymer))

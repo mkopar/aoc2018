@@ -1,45 +1,13 @@
 package main
 
 import (
-	"os"
-	"log"
-	"bufio"
 	"strings"
 	"fmt"
-	"path/filepath"
+	"aoc2018/lib/common"
 )
 
-func readToList(path string) []string {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	var tmp []string
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			tmp = append(tmp, scanner.Text())
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return tmp
-}
-
 func main() {
-	path, err := filepath.Abs("day2/input")
-	if err != nil {
-		log.Fatal(err)
-	}
-	boxIDs := readToList(path)
+	boxIDs := common.ReadToStringList("day2/input")
 
 	// part1
 	m := make(map[string]int)
@@ -61,7 +29,7 @@ func main() {
 			}
 		}
 	}
-	fmt.Println(m["two"] * m["three"])
+	fmt.Println("Part 1 result:", m["two"]*m["three"])
 
 	// part2
 	for i := 0; i < len(boxIDs); i++ {
@@ -81,7 +49,7 @@ func main() {
 				fmt.Printf("Differing in one character at position %d\n", differpos)
 				fmt.Println(boxIDs[i])
 				fmt.Println(boxIDs[j])
-				fmt.Printf("Result: %s%s", boxIDs[i][:differpos], boxIDs[i][differpos+1:])
+				fmt.Printf("Part 2 result: %s%s", boxIDs[i][:differpos], boxIDs[i][differpos+1:])
 				fmt.Println()
 			}
 		}

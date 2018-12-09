@@ -2,51 +2,19 @@ package main
 
 import (
 	"time"
-	"os"
 	"log"
-	"bufio"
 	"strconv"
 	"regexp"
 	"reflect"
-	"path/filepath"
 	"sort"
 	"fmt"
+	"aoc2018/lib/common"
 )
-
-type guardSleeps struct {
-	timestamp 		time.Time
-	minutesAsleep	[]int
-}
 
 type shift struct {
 	guardId			int
 	shiftStart 		time.Time
 	msg 			string
-}
-
-func readToList(path string) []string {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	var tmp []string
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			tmp = append(tmp, scanner.Text())
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return tmp
 }
 
 func parseInput(strShifts []string) []shift {
@@ -76,11 +44,7 @@ func parseInput(strShifts []string) []shift {
 }
 
 func main() {
-	path, err := filepath.Abs("day4/input")
-	if err != nil {
-		log.Fatal(err)
-	}
-	strShifts := readToList(path)
+	strShifts := common.ReadToStringList("day4/input")
 	shifts := parseInput(strShifts)
 	sort.Slice(shifts, func(i, j int) bool {
 		return shifts[i].shiftStart.Before(shifts[j].shiftStart)
@@ -140,7 +104,7 @@ func main() {
 	}
 
 	fmt.Printf("Guard number %d spent most time sleeping\n", mostSleepGuardId)
-	fmt.Printf("Most minute asleep %d\n", minuteAsleepMax)
+	fmt.Printf("Most minute asleep: %d\n", minuteAsleepMax)
 	fmt.Printf("Part 1 result: %d\n", minuteAsleepMax * mostSleepGuardId)
 
 	// part 2

@@ -2,43 +2,10 @@ package main
 
 import (
 	"fmt"
-	"aoc2018/lib/commonapi"
-	"path/filepath"
-	"log"
-	"os"
-	"bufio"
+	"aoc2018/lib/common"
 	"strconv"
+	"log"
 )
-
-func readToList(path string) []int {
-	path, err := filepath.Abs(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	var tmp []int
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		i, err := strconv.Atoi(scanner.Text())
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			tmp = append(tmp, i)
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return tmp
-}
 
 func contains(a []int, x int) bool {
 	for _, n := range a {
@@ -49,15 +16,28 @@ func contains(a []int, x int) bool {
 	return false
 }
 
+func parseStringToInt(input []string) []int {
+	var tmp []int
+	for _, el := range input {
+		intEl, err := strconv.Atoi(el)
+		if err != nil {
+			log.Fatal(err)
+		}
+		tmp = append(tmp, intEl)
+	}
+	return tmp
+}
+
 func main() {
-	changes := commonapi.ReadToList("day1/input")
+	changesStr := common.ReadToStringList("day1/input")
+	changes := parseStringToInt(changesStr)
 
 	// puzzle1
 	sum := 0
 	for _, el := range changes {
 		sum += el
 	}
-	fmt.Printf("Puzzle1 result: %d\n", sum)
+	fmt.Printf("Part 1 result: %d\n", sum)
 
 	// puzzle2
 	sum = 0
@@ -66,7 +46,7 @@ func main() {
 	for {
 		sum += changes[pos]
 		if contains(alreadySeenFreqs, sum) {
-			fmt.Printf("First frequency reached twice is: %d\n", sum)
+			fmt.Printf("Part 2 result: %d\n", sum)
 			break
 		} else {
 			// check if change element already exists, if yes, change pos to the index, if no, pos++

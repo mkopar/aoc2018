@@ -1,13 +1,11 @@
 package main
 
 import (
-	"os"
 	"log"
-	"bufio"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"fmt"
+	"aoc2018/lib/common"
 )
 
 type claim struct {
@@ -16,31 +14,6 @@ type claim struct {
 	top		int
 	width	int
 	height	int
-}
-
-func readToList(path string) []string {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	var tmp []string
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			tmp = append(tmp, scanner.Text())
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	return tmp
 }
 
 func parseStringToInt(input []string) []int {
@@ -68,11 +41,7 @@ func parseInput(strClaims []string) []claim {
 }
 
 func main() {
-	path, err := filepath.Abs("day3/input")
-	if err != nil {
-		log.Fatal(err)
-	}
-	strClaims := readToList(path)
+	strClaims := common.ReadToStringList("day3/input")
 	claims := parseInput(strClaims)
 
 	// part 1
